@@ -4,12 +4,14 @@
 
 | Column | Type   | Options               |
 | ------ | ------ | --------------------- |
-| nickname  | string | null: false, unique: true |
+| nickname  | string | null: false |
 | email  | string | null: false, unique: true |
 | encrypted_password | string | null: false |
-| fullname | string | null: false |
-| fullname_kana | string | null: false |
-| birthday | string | null: false |
+| lastname | string | null: false |
+| firstname | string | null: false |
+| lastname_kana | string | null: false |
+| firstname_kana | string | null: false |
+| birthday | date | null: false |
 
 ### Association
 
@@ -20,32 +22,42 @@
 
 | Column | Type   | Options     |
 | ------ | ------ | ----------- |
-| image   | text | null: false |
 | title   | string | null: false |
 | description   | text | null: false |
-| category   | string | null: false |
-| condition   | string | null: false |
-| shipping_fee_bearer   | string | null: false |
-| shipping_region   | string | null: false |
-| shipping_delivery_time   | string | null: false |
+| category_id    | integer | null: false |
+| condition_id    | integer | null: false |
+| shipping_fee_bearer_id    | integer | null: false |
+| shipping_region_id    | integer | null: false |
+| shipping_delivery_time_id    | integer | null: false |
 | price   | string | null: false |
-| user_id   | references | null: false, foreign_key: true |
-| purchases_id   | references | foreign_key: true |
+| use   | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
-- has_one :purchases
+- has_one :purchase
 
 ## purchases テーブル
 
 | Column | Type       | Options                        |
 | ------ | ---------- | ------------------------------ |
-| shipping address   | text | null: false |
-| item_id   | references | null: false, foreign_key: true |
-| user_id   | references | null: false, foreign_key: true |
+| item   | references | null: false, foreign_key: true |
+| user   | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :item
 - belongs_to :user
+
+## Shipping address テーブル
+
+| Column | Type       | Options                        |
+| ------ | ---------- | ------------------------------ |
+| zip_code   | string | null: false |
+| prefectures   | string | null: false |
+| municipalities   | string | null: false |
+| street address   | string | null: false |
+| Building name   | string |  |
+| telephone number   | string | null: false |
+| price   | string |  |
+| token   | string |  |
