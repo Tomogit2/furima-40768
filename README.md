@@ -27,10 +27,10 @@
 | category_id    | integer | null: false |
 | condition_id    | integer | null: false |
 | shipping_fee_bearer_id    | integer | null: false |
-| shipping_region_id    | integer | null: false |
+| prefecture_id    | integer | null: false |
 | shipping_delivery_time_id    | integer | null: false |
-| price   | string | null: false |
-| use   | references | null: false, foreign_key: true |
+| price   | integer | null: false |
+| user   | references | null: false, foreign_key: true |
 
 ### Association
 
@@ -43,21 +43,27 @@
 | ------ | ---------- | ------------------------------ |
 | item   | references | null: false, foreign_key: true |
 | user   | references | null: false, foreign_key: true |
+| purchase_id  | references | null: false, foreign_key: true |
+
 
 ### Association
 
 - belongs_to :item
-- belongs_to :user
+- belongs_to :user  
+- has_one :shipping_address
 
-## Shipping address テーブル
+## shipping_address テーブル
 
 | Column | Type       | Options                        |
 | ------ | ---------- | ------------------------------ |
 | zip_code   | string | null: false |
-| prefectures   | string | null: false |
+| prefecture_id   | integer | null: false |
 | municipalities   | string | null: false |
-| street address   | string | null: false |
-| Building name   | string |  |
-| telephone number   | string | null: false |
-| price   | string |  |
-| token   | string |  |
+| street_address   | string | null: false |
+| building_name   | string |  |
+| telephone_number   | string | null: false |
+| purchase  | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :purchase
