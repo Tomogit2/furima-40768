@@ -4,8 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :items
-  has_many :purchases
+  #別の機能での実装内容のためいったんコメントアウト。次回の実装で変更点として上がらず、レビューができなくなってしまうため。
+  #has_many :items
+  #has_many :purchases
 
   PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i
   validates :password, format: { with: PASSWORD_REGEX, message: '英字と数字の両方を含めて設定してください' }
