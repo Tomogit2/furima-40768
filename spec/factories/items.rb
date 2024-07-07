@@ -4,7 +4,6 @@ FactoryBot.define do
     description { "This is a sample item1." }    
 
     category_id { 2 }
-    category_id { 2 }
     condition_id { 2 }
     shipping_fee_bearer_id { 2 }
     prefecture_id { 2 }
