@@ -2,8 +2,14 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    #@items = Item.order('created_at DESC')
+    @items = Item.order('created_at DESC')
   end
+
+  #こちらは詳細機能での実装内容。
+  #こちらのプルリクエスト内容をマージしてしまうと、次回の実装で変更点として上がらず、レビューができなくなってしまうため一度コメントアウト。
+  #def show
+    #@item = Item.find(params[:id])
+  #end
 
   def new
     @item = Item.new

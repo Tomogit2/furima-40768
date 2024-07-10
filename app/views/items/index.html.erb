@@ -128,37 +128,45 @@
     </div>
     <ul class='item-lists'>
 
-      <%# 商品のインスタンス変数になにか入っている場合、中身のすべてを展開できるようにしましょう %>
-      <li class='list'>
-        <%= link_to "#" do %>
-        <div class='item-img-content'>
-          <%= image_tag "item-sample.png", class: "item-img" %>
+      <% if @items.any? %>
+        <% @items.each do |item| %>
+        <li class='list'>
+           <%#こちらは詳細機能での実装内容。%>
+           <%#こちらのプルリクエスト内容をマージしてしまうと、次回の実装で変更点として上がらず、レビューができなくなってしまうため一度コメントアウト。%>
+            <%#= link_to item_path(item) do %>
+          <div class='item-img-content'>
+            <% if item.image.attached? %>
+              <%= image_tag item.image, class: "item-img" %>
+            <% else %>
+              <%= image_tag "item-sample.png", class: "item-img" %>
+            <% end %>
 
           <%# 商品が売れていればsold outを表示しましょう %>
+          <!--
           <div class='sold-out'>
             <span>Sold Out!!</span>
           </div>
+          <% end %>
+          -->
           <%# //商品が売れていればsold outを表示しましょう %>
-
         </div>
         <div class='item-info'>
           <h3 class='item-name'>
-            <%= "商品名" %>
+            <%= item.title %>
           </h3>
           <div class='item-price'>
-            <span><%= "販売価格" %>円<br><%= '配送料負担' %></span>
+            <span><%= item.price %>円<br><%= item.shipping_fee_bearer.name %></span>
             <div class='star-btn'>
               <%= image_tag "star.png", class:"star-icon" %>
               <span class='star-count'>0</span>
             </div>
           </div>
         </div>
-        <% end %>
+        <% end %>        
       </li>
-      <%# //商品のインスタンス変数になにか入っている場合、中身のすべてを展開できるようにしましょう %>
+      <% end %>
 
-      <%# 商品がない場合は以下のダミー商品が表示されるようにしましょう %>
-      <%# 商品がある場合は表示されないようにしましょう %>
+      <% unless @items.any? %>
       <li class='list'>
         <%= link_to '#' do %>
         <%= image_tag "https://tech-master.s3.amazonaws.com/uploads/curriculums/images/Rails1-4/sample.jpg", class: "item-img" %>
@@ -176,8 +184,7 @@
         </div>
         <% end %>
       </li>
-      <%# //商品がある場合は表示されないようにしましょう %>
-      <%# //商品がない場合は以下のダミー商品が表示されるようにしましょう %>
+      <% end %>
     </ul>
   </div>
   <%# /商品一覧 %>

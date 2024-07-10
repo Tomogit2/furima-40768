@@ -13,7 +13,7 @@ FactoryBot.define do
 
     after(:build) do |item|
       item.image.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'Sample.jpg')), filename: 'Sample.jpg',
-                             content_type: 'image/jpeg')
+                        content_type: 'image/jpeg')
     end
   end
 end
