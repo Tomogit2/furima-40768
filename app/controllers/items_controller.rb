@@ -5,9 +5,9 @@ class ItemsController < ApplicationController
 
   def redirect_unless_user
     @item = Item.find(params[:id])
-    unless current_user == @item.user
-      redirect_to root_path
-    end
+    return if current_user == @item.user
+
+    redirect_to root_path
   end
 
   def set_item
@@ -37,7 +37,7 @@ class ItemsController < ApplicationController
 
   def edit
   end
-    
+
   def update
     if @item.update(item_params)
       redirect_to item_path(@item.id)
