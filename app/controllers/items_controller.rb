@@ -4,7 +4,6 @@ class ItemsController < ApplicationController
   before_action :redirect_unless_user, only: [:edit, :update]
 
   def redirect_unless_user
-    @item = Item.find(params[:id])
     return if current_user == @item.user
 
     redirect_to root_path
