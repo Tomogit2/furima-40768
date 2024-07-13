@@ -6,6 +6,8 @@ class PurchasesController < ApplicationController
     @purchase_address = PurchaseAddress.new
   end
 
+  def create
+    @purchase_address = PurchaseAddress.new(purchase_address_params)
   if @purchase_address.valid?
     @purchase_address.save
     return redirect_to root_path
