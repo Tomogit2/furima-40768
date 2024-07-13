@@ -1,11 +1,21 @@
-class PurchaseAddress
+  class PurchaseAddress
 
-  include ActiveModel::Model
-  attr_accessor :postal_code, :prefecture, :city, :house_number, :building_name, :price, :user_id
+    include ActiveModel::Model
+    attr_accessor :item_id, :user_id, :zip_code, :prefecture_id, :municipalities, :street_address, :building_name, :telephone_number, :token
 
-  # ここにバリデーションの処理を書く
+    with_options presence: true do
+      validates :item_id, :user_id, :token, :municipalities, :street_address
+      validates :zip_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
+      validates :telephone_number, format: {with: /\A\d{10,11}\z/, message: "is invalid. not Include hyphen(-)"}
+    end
+    validates :prefecture_id, numericality: {other_than: 0, message: "can't be blank"}
 
-  def save
-    # 各テーブルにデータを保存する処理を書く
-  end
-end
+    def save
+      if valid?
+        purchase = Purchase.create(item_id: item_id, user_id: user_id)
+        ShippingAddress.create(zip_code: zip_code, prefecture_id: prefecture_id, municipalities: municipalities, street_address: street_address, building_name: building_name, telephone_number: telephone_number, purchase_id: purchase.id)
+        return true
+      else
+        return false
+      end
+    end
