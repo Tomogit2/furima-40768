@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
-  before_action :set_item, only: [:show, :edit, :update]
-  before_action :redirect_unless_user, only: [:edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :redirect_unless_user, only: [:edit, :update, :destroy]
 
   def redirect_unless_user
     return if current_user == @item.user
@@ -42,6 +42,13 @@ class ItemsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    return unless current_user == @item.user
+
+    @item.destroy
+    redirect_to root_path
   end
 
   private
