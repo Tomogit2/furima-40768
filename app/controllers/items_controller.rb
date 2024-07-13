@@ -3,15 +3,6 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :redirect_unless_user, only: [:edit, :update, :destroy]
 
-  def redirect_unless_user
-    return if current_user == @item.user
-
-    redirect_to root_path
-  end
-
-  def set_item
-    @item = Item.find(params[:id])
-  end
 
   def index
     @items = Item.order('created_at DESC')
@@ -45,8 +36,6 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    return unless current_user == @item.user
-
     @item.destroy
     redirect_to root_path
   end
@@ -56,5 +45,15 @@ class ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:title, :description, :category_id, :condition_id, :shipping_fee_bearer_id, :prefecture_id,
                                  :shipping_delivery_time_id, :price, :image).merge(user_id: current_user.id)
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  def redirect_unless_user
+    return if current_user == @item.user
+
+    redirect_to root_path
   end
 end
