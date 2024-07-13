@@ -8,15 +8,15 @@ class PurchasesController < ApplicationController
 
   def create
     @purchase_address = PurchaseAddress.new(purchase_address_params)
-  if @purchase_address.valid?
-    @purchase_address.save
-    return redirect_to root_path
-    else
-      render 'new', status: :unprocessable_entity
+    if @purchase_address.valid?
+      @purchase_address.save
+      return redirect_to root_path
+      else
+        render 'new', status: :unprocessable_entity
     end
   end
 
-  private
+private
 
   def purchase_address_params
     params.require(:purchase_address).permit(:user_id, :item_id, :zip_code, :prefecture_id, :municipalities, :street_address, :building_name, :telephone_number, :token)
