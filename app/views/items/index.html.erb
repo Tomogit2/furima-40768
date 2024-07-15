@@ -119,7 +119,6 @@
     </ul>
   </div>
   <%# /FURIMAの特徴 %>
-
   <%# 商品一覧 %>
   <div class='item-contents'>
     <h2 class='title'>ピックアップカテゴリー</h2>
@@ -133,20 +132,16 @@
         <li class='list'>
             <%= link_to item_path(item) do %>
           <div class='item-img-content'>
-            <% if item.image.attached? %>
-              <%= image_tag item.image, class: "item-img" %>
-            <% else %>
-              <%= image_tag "item-sample.png", class: "item-img" %>
-            <% end %>
-
-          <%# 商品が売れていればsold outを表示しましょう %>
-          <!--
+              <% if item.image.attached? %>
+                <%= image_tag item.image, class: "item-img" %>
+              <% else %>
+                <%= image_tag "item-sample.png", class: "item-img" %>
+              <% end %>
+           <% if item.purchase.present? %>
           <div class='sold-out'>
             <span>Sold Out!!</span>
           </div>
-          <% end %>
-          -->
-          <%# //商品が売れていればsold outを表示しましょう %>
+          <% end %>     
         </div>
         <div class='item-info'>
           <h3 class='item-name'>
@@ -159,12 +154,11 @@
               <span class='star-count'>0</span>
             </div>
           </div>
-        </div>
-        <% end %>        
-      </li>
-      <% end %>
-
-      <% unless @items.any? %>
+        </div>   
+      <% end %>      
+    </li>
+  <% end %>
+      <% else %><%# unless @items.any? %>
       <li class='list'>
         <%= link_to '#' do %>
         <%= image_tag "https://tech-master.s3.amazonaws.com/uploads/curriculums/images/Rails1-4/sample.jpg", class: "item-img" %>
