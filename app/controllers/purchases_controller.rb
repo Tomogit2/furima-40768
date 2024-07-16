@@ -7,9 +7,12 @@ class PurchasesController < ApplicationController
   def set_payjp_api_key
     Payjp.api_key = ENV['PAYJP_SECRET_KEY']
   end
-
+  
   def new
     @purchase_address = PurchaseAddress.new
+    if @item.purchase.present? || current_user.id == @item.user.id
+      redirect_to root_path
+      end
   end
 
   def create
