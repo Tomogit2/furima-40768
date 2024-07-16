@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :item do
+    association :user
     title { 'Sample Item1' }
     description { 'This is a sample item1.' }
 
@@ -9,7 +10,6 @@ FactoryBot.define do
     prefecture_id { 2 }
     shipping_delivery_time_id { 2 }
     price { Faker::Number.between(from: 300, to: 9_999_999) }
-    association :user
 
     after(:build) do |item|
       item.image.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'Sample.jpg')), filename: 'Sample.jpg',
