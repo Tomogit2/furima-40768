@@ -17,15 +17,16 @@ class PurchasesController < ApplicationController
   end
 
   def create
-    @purchase_address = PurchaseAddress.new(purchase_address_params.merge(user_id: current_user.id, item_id: params[:item_id]))
-  
+    @purchase_address = PurchaseAddress.new(purchase_address_params)
+
     if @purchase_address.valid?
       pay_item
-        redirect_to root_path
-      else
-        Rails.logger.error @purchase_address.errors.full_messages.join(", ")
-        gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
-        render 'new', status: :unprocessable_entity
+      @purchase_address.save
+      redirect_to root_path
+    else
+      Rails.logger.error @purchase_address.errors.full_messages.join(", ")
+      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+      render 'new', status: :unprocessable_entity
     end
   end
 
@@ -43,8 +44,8 @@ end
 
   def purchase_address_params
     params.require(:purchase_address).permit(:zip_code, :prefecture_id, :municipalities, :street_address, :building_name,
-                                             :telephone_number).merge(token: params[:token])
-  end
+                                             :telephone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
+end
 
   def set_item
     @item = Item.find(params[:item_id])
