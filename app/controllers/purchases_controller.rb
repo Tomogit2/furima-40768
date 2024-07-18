@@ -8,13 +8,35 @@ class PurchasesController < ApplicationController
     Payjp.api_key = ENV['PAYJP_SECRET_KEY']
   end
   
-  def new
+  def new    
     @purchase_address = PurchaseAddress.new
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     if @item.purchase.present? || current_user.id == @item.user.id
       redirect_to root_path
-      end
+    end
   end
 
+  def create
+    @purchase_address = PurchaseAddress.new(purchase_address_params.merge(user_id: current_user.id, item_id: params[:item_id]))
+  
+    if @purchase_address.valid?
+      pay_item
+      if @purchase_address.save
+        redirect_to root_path
+      else
+        Rails.logger.error @purchase_address.errors.full_messages.join(", ")
+        gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+        render 'new', status: :unprocessable_entity
+      end
+    else
+      Rails.logger.error @purchase_address.errors.full_messages.join(", ")
+      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
+      #public_key = ENV['PAYJP_PUBLIC_KEY']
+      render 'new', status: :unprocessable_entity
+  end
+end
+
+=begin
   def create
     @purchase_address = PurchaseAddress.new(purchase_address_params.merge(user_id: current_user.id, item_id: params[:item_id]))
     if @purchase_address.valid?
@@ -26,6 +48,7 @@ class PurchasesController < ApplicationController
       render 'new', status: :unprocessable_entity
     end
   end
+=end
 
   def pay_item
     Payjp::Charge.create(
@@ -39,7 +62,7 @@ class PurchasesController < ApplicationController
 
   def purchase_address_params
     params.require(:purchase_address).permit(:zip_code, :prefecture_id, :municipalities, :street_address, :building_name,
-                                             :telephone_number, :token).merge(token: params[:token])
+                                             :telephone_number).merge(token: params[:token])
   end
 
   def set_item
@@ -50,5 +73,6 @@ class PurchasesController < ApplicationController
     return if current_user.id != @item.user.id
 
     redirect_to root_path
+    end
   end
-end
+

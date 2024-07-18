@@ -12,10 +12,21 @@ class PurchaseAddress
 
   def save
     return false unless valid?
+    purchase = Purchase.create(item_id: item_id, user_id: user_id)
+    if purchase.persisted?
+      ShippingAddress.create(zip_code: zip_code, prefecture_id: prefecture_id, municipalities: municipalities,
+                             street_address: street_address, building_name: building_name, telephone_number: telephone_number, purchase_id: purchase.id)
+      true
+    else
+      Rails.logger.error "Failed to create Purchase: #{purchase.errors.full_messages.join(", ")}"
+      false
+    end
 
+=begin
     purchase = Purchase.create(item_id:, user_id:)
     ShippingAddress.create(zip_code:, prefecture_id:, municipalities:,
                            street_address:, building_name:, telephone_number:, purchase_id: purchase.id)
     true
+=end
   end
 end

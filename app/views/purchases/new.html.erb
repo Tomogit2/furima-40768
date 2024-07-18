@@ -1,6 +1,7 @@
 <%= form_with model: @purchase_address, id: 'charge-form', class: 'transaction-form-wrap', url: item_purchases_path(@item), method: :post, local: true do |f| %>
 <%= render 'shared/error_messages', model: @purchase_address %>
 <%= render "shared/second-header"%>
+<%= include_gon %>
 
 <div class='transaction-contents'>
   <div class='transaction-main'>
