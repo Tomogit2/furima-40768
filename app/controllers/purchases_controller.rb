@@ -47,7 +47,7 @@ end
 
   def purchase_address_params
     params.require(:purchase_address).permit(:zip_code, :prefecture_id, :municipalities, :street_address, :building_name,
-                                             :telephone_number, :token)#).merge(token: params[:token])
+                                             :telephone_number).merge(token: params[:token])
   end
 
   def set_item
