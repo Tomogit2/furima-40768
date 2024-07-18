@@ -21,18 +21,14 @@ class PurchasesController < ApplicationController
   
     if @purchase_address.valid?
       pay_item
-      if @purchase_address.save
         redirect_to root_path
       else
         Rails.logger.error @purchase_address.errors.full_messages.join(", ")
         gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
         render 'new', status: :unprocessable_entity
-      end
-    else
-      Rails.logger.error @purchase_address.errors.full_messages.join(", ")
-      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
-      render 'new', status: :unprocessable_entity
+    end
   end
+
 end
 
   def pay_item
