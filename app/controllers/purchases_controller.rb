@@ -26,8 +26,6 @@ class PurchasesController < ApplicationController
     end
   end
 
-end
-
   def pay_item
     Payjp::Charge.create(
       amount: @item.price, # 購入する商品の価格を指定
@@ -55,6 +53,6 @@ end
     return if current_user.id != @item.user.id
 
     redirect_to root_path
-    end
   end
+end
 
