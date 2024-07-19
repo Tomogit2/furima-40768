@@ -1,7 +1,5 @@
 FactoryBot.define do
   factory :purchase_address do
-    association :user
-    association :item
     token { 'tok_abcdefghijk00000000000000000' }
 
     zip_code { "#{Faker::Number.number(digits: 3)}-#{Faker::Number.number(digits: 4)}" }
