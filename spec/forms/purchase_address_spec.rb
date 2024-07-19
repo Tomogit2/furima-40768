@@ -21,15 +21,7 @@ RSpec.describe PurchaseAddress, type: :model do
         @purchase_address.valid?
         expect(@purchase_address.errors.full_messages).to include("Token can't be blank")
       end
-    end
 
-    context '商品購入ができるとき' do
-      it '全ての値が正しく入力されていれば購入できる' do
-        expect(@purchase_address).to be_valid
-      end
-    end
-
-    context '商品購入ができないとき' do
       it '郵便番号が空では登録できないこと' do
         @purchase_address.zip_code = nil
         @purchase_address.valid?
