@@ -3,10 +3,6 @@ class PurchasesController < ApplicationController
   before_action :set_item, only: [:new, :create]
   before_action :redirect_unless_user, only: [:new, :create]
   before_action :set_payjp_api_key, only: [:create]
-
-  def set_payjp_api_key
-    Payjp.api_key = ENV['PAYJP_SECRET_KEY']
-  end
   
   def new    
     @purchase_address = PurchaseAddress.new
@@ -41,11 +37,15 @@ end
   end
 
   private
+  
+  def set_payjp_api_key
+    Payjp.api_key = ENV['PAYJP_SECRET_KEY']
+  end
 
   def purchase_address_params
     params.require(:purchase_address).permit(:zip_code, :prefecture_id, :municipalities, :street_address, :building_name,
                                              :telephone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
-end
+  end
 
   def set_item
     @item = Item.find(params[:item_id])
